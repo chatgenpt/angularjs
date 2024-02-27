@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="todoApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+
+<body ng-controller="TodoController">
+
+    <h2>To-Do List</h2>
+
+    <form ng-submit="addTask()">
+        <label>New Task:</label>
+        <input type="text" ng-model="newTask" required>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <ul>
+        <li ng-repeat="task in tasks">
+            <span>{{ task.name }}</span>
+            <button ng-click="editTask(task)">Edit</button>
+            <button ng-click="deleteTask(task)">Delete</button>
+        </li>
+    </ul>
+
+    <div ng-if="editingTask">
+        <h3>Edit Task</h3>
+        <label for="editedTask">Task Name:</label>
+        <input type="text" id="editedTask" ng-model="editingTask.name" required>
+        <button ng-click="saveEditedTask()">Save</button>
+        <button ng-click="cancelEdit()">Cancel</button>
+    </div>
+
+    <script>
+        angular.module('todoApp', [])
+            .controller('TodoController', function ($scope) {
+                $scope.tasks = [];
+                $scope.newTask = '';
+                $scope.editingTask = null;
+
+                $scope.addTask = function () {
+                    $scope.newTask && $scope.tasks.push({ name: $scope.newTask }) && ($scope.newTask = '');
+                };
+
+                $scope.editTask = function (task) {
+                    $scope.editingTask = task;
+                };
+
+                $scope.saveEditedTask = function () {
+                    if ($scope.editingTask) {
+                        $scope.editingTask = null;
+                    }
+                };
+
+                $scope.cancelEdit = function () {
+                    $scope.editingTask = null;
+                };
+
+                $scope.deleteTask = function (task) {
+                    $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+                };
+            });
+    </script>
+</body>
+
+</html>
