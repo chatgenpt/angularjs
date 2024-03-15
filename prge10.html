@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<title>Item Management Application</title>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-app="itemMgmtApp" ng-controller="itemMgmtAppCntrl">
+    <h1>Item Management Application</h1>
+    Enter an item to add: <input type="text" ng-model="newItem">
+    <button ng-click="addItem()">ADD</button>
+    <br /><br />
+    <b>List of Items</b>
+    <table border="1">
+    <tr>
+        <th>SLNO</th>
+        <th>Item</th>
+        <th>Remove</th>
+    </tr>
+        <tr ng-repeat="i in itemList">
+            <td>{{$index+1}}</td>
+            <td>{{i}}</td>
+            <td><button ng-click="removeItem(i)">Remove</button></td>
+        </tr>
+    </table>
+    <br />
+    Total Number of Items=<b>{{itemList.length}}</b>
+
+    <script>
+        var app = angular.module("itemMgmtApp", []);
+        app.controller("itemMgmtAppCntrl", function ($scope) {
+            $scope.itemList = ['Pen', 'Pencil', 'Eraser', 'Book'];
+            $scope.addItem = function () {
+                if ($scope.newItem && !$scope.itemList.includes($scope.newItem)) {
+                    $scope.itemList.push($scope.newItem);
+                } else {
+                    alert($scope.newItem ? 'This item is already in the collection' : 'Please Enter the item to add');
+                }
+            };
+            $scope.removeItem = function (i) {
+                if (confirm("Are you sure you want to delete " + i)) {
+                    $scope.itemList.splice($scope.itemList.indexOf(i), 1);
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>
